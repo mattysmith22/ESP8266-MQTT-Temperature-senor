@@ -8,4 +8,4 @@ I do not accept any blame for issues that may arise from the use of this code.
 
 How to set up
 
-![Diagram](https://raw.githubusercontent.com/mattysmith22/Test/test/Pictures/NodeMCU.png)
+![Diagram](https://raw.githubusercontent.com/mattysmith22/ESP8266-MQTT-Temperature-sensor/master/Pictures/NodeMCU.png)
