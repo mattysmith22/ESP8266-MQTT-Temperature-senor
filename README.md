@@ -4,4 +4,4 @@ This is meant to be an IOT device that notifies an MQTT broker of the temperatur
 
 How to set up
 
-![Diagram](https://raw.githubusercontent.com/mattysmith22/Test/Pictures/NodeMCU.png)
+![Diagram](https://raw.githubusercontent.com/mattysmith22/Test/test/Pictures/NodeMCU.png)
