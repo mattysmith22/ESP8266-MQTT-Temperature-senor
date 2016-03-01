@@ -14,49 +14,66 @@ const char* mqtt_username = "...";
 const char* mqtt_password = "...";
 const char* mqtt_node     = "...";
 
-const int   temp_pin      = 2;
+const int   misc_sens_pin = 2;
+const bool  misc_debug    = true;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-OneWire oneWire(temp_pin);
+OneWire oneWire(misc_sens_pin);
 DallasTemperature DS18B20(&oneWire);
 
 long lastMsg = 0;
 char msg[50];
 int value = 0;
 
+void debug(String message)
+{
+  if(misc_debug)
+  {
+    Serial.print(message);
+  }
+}
+
+void debugln(String message)
+{
+  if(misc_debug)
+  {
+    Serial.println(message);
+  }
+}
+
 void setup_wifi() {
 
   delay(10);
   // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(wifi_ssid);
+  debugln("");
+  debug("Connecting to ");
+  debugln(wifi_ssid);
 
   WiFi.begin(wifi_ssid, wifi_password);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    debug(".");
   }
 
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  debugln("");
+  debugln("WiFi connected");
+  debugln("IP address: ");
+  debugln((String)WiFi.localIP());
 }
 
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
+    debug("Attempting MQTT connection...");
     // Attempt to connect
     if (client.connect("ESP8266Client")) {
-      Serial.println("connected");
+      debugln("connected");
     } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
+      debug("failed, rc=");
+      debug((String)client.state());
+      debugln(" try again in 5 seconds");
       // Wait 5 seconds before retrying
       delay(5000);
     }
@@ -86,8 +103,8 @@ void loop() {
     temp = DS18B20.getTempCByIndex(0);
     dtostrf(temp, 5, 2, tempStr);
     
-    Serial.print("Publish message: ");
-    Serial.println(temp);
+    debug("Publish message: ");
+    debugln((String)temp);
     client.publish("outTopic", tempStr);
   }
 }
