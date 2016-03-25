@@ -14,8 +14,9 @@ const char* mqtt_username = "...";
 const char* mqtt_password = "...";
 const char* mqtt_node     = "...";
 
-const int   misc_sens_pin = 2;
+const int   misc_sens_pin = 4;
 const bool  misc_debug    = true;
+const int   mqtt_interval = 60000;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -59,8 +60,6 @@ void setup_wifi() {
 
   debugln("");
   debugln("WiFi connected");
-  debugln("IP address: ");
-  debugln((String)WiFi.localIP());
 }
 
 void reconnect() {
@@ -72,7 +71,7 @@ void reconnect() {
       debugln("connected");
     } else {
       debug("failed, rc=");
-      debug((String)client.state());
+      debug((char*)client.state());
       debugln(" try again in 5 seconds");
       // Wait 5 seconds before retrying
       delay(5000);
@@ -88,7 +87,7 @@ void setup() {
 
 void loop() {
   float temp;
-  char* tempStr;
+  char tempStr[5];
   
   if (!client.connected()) {
     reconnect();
@@ -96,15 +95,17 @@ void loop() {
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 60000) {
+  if (now - lastMsg > mqtt_interval) {
     lastMsg = now;
     ++value;
     DS18B20.requestTemperatures();
-    temp = DS18B20.getTempCByIndex(0);
-    dtostrf(temp, 5, 2, tempStr);
-    
+    temp = DS18B20.getTempCByIndex(0); 
+
     debug("Publish message: ");
+    String(temp).toCharArray(tempStr, 2);
     debugln((String)temp);
+    String(temp).toCharArray(tempStr, 5);
     client.publish("outTopic", tempStr);
+    debug("Done");
   }
 }
