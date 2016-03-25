@@ -5,18 +5,20 @@
 
 // Update these with values suitable for your network.
 
-const char* wifi_ssid     = "...";
-const char* wifi_password = "...";
+const char* wifi_ssid     = "..."; // The name of the wifi
+const char* wifi_password = "..."; // The password of the wifi
 
-const char* mqtt_server   = "...";
-const int   mqtt_port     = 1886;
-const char* mqtt_username = "...";
-const char* mqtt_password = "...";
-const char* mqtt_node     = "...";
+const char* mqtt_server   = "..."; // The IP for the server
+const int   mqtt_port     = 1886 ; // The port for the server
+const char* mqtt_username = "..."; // The username for the server
+const char* mqtt_password = "..."; // The password for the server
+const char* mqtt_node     = "..."; // Where to mount the temperature sensor
 
-const int   misc_sens_pin = 4;
-const bool  misc_debug    = true;
-const int   mqtt_interval = 60000;
+const int   misc_sens_pin = 4;     // The GPIO pin that the temperature sensor is attatched to
+const bool  misc_debug    = true;  // Whether to output the debugging info to serial
+const int   mqtt_interval = 60000; // Time (milliseconds) between polls
+
+// Declarations
 
 WiFiClient espClient;
 PubSubClient client(espClient);
